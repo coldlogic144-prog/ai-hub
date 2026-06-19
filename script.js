@@ -7,7 +7,8 @@ const state = {
     currentCategory: 'all',
     currentSearch: '',
     currentView: 'tools',
-    customTools: []
+    customTools: [],
+    favoriteToolKeys: new Set()
 };
 
 // Quick prompt templates
@@ -23,10 +24,43 @@ const PROMPT_TEMPLATES = {
 /* ==================== INITIALIZATION ==================== */
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initFavorites();
     loadTools();
     setupEventListeners();
     setupAddToolModal();
 });
+
+/* ==================== FAVORITES ==================== */
+function initFavorites() {
+    const savedFavorites = JSON.parse(localStorage.getItem('favoriteTools') || '[]');
+    state.favoriteToolKeys = new Set(Array.isArray(savedFavorites) ? savedFavorites : []);
+}
+
+function getToolKey(tool) {
+    return `${tool.name || ''}|${tool.url || ''}`;
+}
+
+function isFavorite(tool) {
+    return state.favoriteToolKeys.has(getToolKey(tool));
+}
+
+function saveFavorites() {
+    localStorage.setItem('favoriteTools', JSON.stringify([...state.favoriteToolKeys]));
+}
+
+function toggleFavorite(toolKey) {
+    if (state.favoriteToolKeys.has(toolKey)) {
+        state.favoriteToolKeys.delete(toolKey);
+        showToast('Removed from favorites');
+    } else {
+        state.favoriteToolKeys.add(toolKey);
+        showToast('Added to favorites');
+    }
+
+    saveFavorites();
+    renderCategories();
+    applyFilters();
+}
 
 /* ==================== THEME MANAGEMENT ==================== */
 function initTheme() {
@@ -96,6 +130,11 @@ function renderCategories() {
             <span>All Tools</span>
             <span class="category-count">${state.tools.length}</span>
         </button>
+        <button class="category-item" data-category="favorites">
+            <span class="nav-icon">★</span>
+            <span>Favorites</span>
+            <span class="category-count">${state.tools.filter(isFavorite).length}</span>
+        </button>
     `;
 
     // Sort categories alphabetically and append each
@@ -112,12 +151,17 @@ function renderCategories() {
 
     categoriesList.innerHTML = html;
 
+    categoriesList.querySelectorAll('.category-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === state.currentCategory);
+    });
+
     // Attach click handlers
     categoriesList.querySelectorAll('.category-item').forEach(btn => {
         btn.addEventListener('click', () => {
-            categoriesList.querySelectorAll('.category-item').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
             state.currentCategory = btn.dataset.category;
+            categoriesList.querySelectorAll('.category-item').forEach(b => {
+                b.classList.toggle('active', b.dataset.category === state.currentCategory);
+            });
             applyFilters();
             closeSidebar();
         });
@@ -157,7 +201,11 @@ function renderTools() {
     emptyState.style.display = 'none';
 
     // Build cards with staggered animation
-    grid.innerHTML = state.filteredTools.map((tool, idx) => `
+    grid.innerHTML = state.filteredTools.map((tool, idx) => {
+        const toolKey = getToolKey(tool);
+        const favorite = state.favoriteToolKeys.has(toolKey);
+
+        return `
         <article class="tool-card" style="animation-delay: ${Math.min(idx * 0.05, 0.5)}s">
             <div class="tool-card-header">
                 <div class="tool-icon">${tool.icon || '🤖'}</div>
@@ -165,6 +213,14 @@ function renderTools() {
                     <h3 class="tool-name">${escapeHtml(tool.name)}</h3>
                     <span class="tool-category">${escapeHtml(tool.category)}</span>
                 </div>
+                <button
+                    class="favorite-btn${favorite ? ' active' : ''}"
+                    type="button"
+                    data-tool-key="${escapeHtml(toolKey)}"
+                    aria-label="${favorite ? 'Remove from favorites' : 'Add to favorites'}"
+                    aria-pressed="${favorite}"
+                    title="${favorite ? 'Remove from favorites' : 'Add to favorites'}"
+                >★</button>
             </div>
             <p class="tool-description">${escapeHtml(tool.description)}</p>
             <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener noreferrer" class="tool-visit-btn">
@@ -172,7 +228,8 @@ function renderTools() {
                 <span>→</span>
             </a>
         </article>
-    `).join('');
+    `;
+    }).join('');
 }
 
 /* ==================== FILTERING ==================== */
@@ -182,7 +239,10 @@ function applyFilters() {
 
     state.filteredTools = state.tools.filter(tool => {
         // Category filter
-        const matchesCategory = category === 'all' || tool.category === category;
+        const matchesCategory =
+            category === 'all' ||
+            (category === 'favorites' && isFavorite(tool)) ||
+            tool.category === category;
 
         // Search filter — checks name, description, and category
         const matchesSearch = !query ||
@@ -255,6 +315,12 @@ function setupEventListeners() {
 
     // Copy to clipboard
     document.getElementById('copyBtn').addEventListener('click', copyPrompt);
+
+    document.getElementById('toolsGrid').addEventListener('click', (e) => {
+        const favoriteBtn = e.target.closest('.favorite-btn');
+        if (!favoriteBtn) return;
+        toggleFavorite(favoriteBtn.dataset.toolKey);
+    });
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
