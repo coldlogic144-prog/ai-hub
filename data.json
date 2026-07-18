@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "generated_at": "2026-07-18T20:46:07+05:30",
+    "worksheet_count": 2,
+    "worksheet_names": [
+      "Sales",
+      "Inventory"
+    ],
+    "source_file": "data.xlsx"
+  },
+  "worksheets": {
+    "Sales": {
+      "columns": [
+        "Date",
+        "Region",
+        "Representative",
+        "Product",
+        "Units",
+        "Unit Price",
+        "Revenue",
+        "Status",
+        "Hindi Note",
+        "Legacy Hindi Sample"
+      ],
+      "rows": [
+        {
+          "Date": "2026-01-03T00:00:00",
+          "Region": "North",
+          "Representative": "Aarav Sharma",
+          "Product": "Analytics Pro",
+          "Units": 18,
+          "Unit Price": 2499.5,
+          "Revenue": 44991,
+          "Status": "Closed",
+          "Hindi Note": "नमस्ते ग्राहक",
+          "Legacy Hindi Sample": "d`fr nso 010"
+        },
+        {
+          "Date": "2026-01-09T00:00:00",
+          "Region": "West",
+          "Representative": "Maya Patel",
+          "Product": "Sheets Sync",
+          "Units": 31,
+          "Unit Price": 1299,
+          "Revenue": 40269,
+          "Status": "Open",
+          "Hindi Note": "भुगतान प्रतीक्षित",
+          "Legacy Hindi Sample": "fgUnh ys[k"
+        },
+        {
+          "Date": "2026-02-14T00:00:00",
+          "Region": "South",
+          "Representative": "Kabir Rao",
+          "Product": "Dashboard Kit",
+          "Units": 12,
+          "Unit Price": 3499,
+          "Revenue": 41988,
+          "Status": "Closed",
+          "Hindi Note": "अच्छा प्रदर्शन",
+          "Legacy Hindi Sample": "Hkkjr"
+        },
+        {
+          "Date": "2026-03-02T00:00:00",
+          "Region": "East",
+          "Representative": "Isha Verma",
+          "Product": "Import Suite",
+          "Units": 25,
+          "Unit Price": 1599.75,
+          "Revenue": 39993.75,
+          "Status": "Review",
+          "Hindi Note": "रिकॉर्ड जांचें",
+          "Legacy Hindi Sample": "lkexzh"
+        },
+        {
+          "Date": "2026-03-21T00:00:00",
+          "Region": "North",
+          "Representative": "Rohan Mehta",
+          "Product": "Analytics Pro",
+          "Units": 44,
+          "Unit Price": 2499.5,
+          "Revenue": 109978,
+          "Status": "Closed",
+          "Hindi Note": null,
+          "Legacy Hindi Sample": null
+        }
+      ],
+      "row_count": 5,
+      "column_count": 10
+    },
+    "Inventory": {
+      "columns": [
+        "SKU",
+        "Item",
+        "Category",
+        "In Stock",
+        "Reorder Level",
+        "Last Checked",
+        "Supplier",
+        "Notes"
+      ],
+      "rows": [
+        {
+          "SKU": "AN-100",
+          "Item": "Analytics Pro License",
+          "Category": "Software",
+          "In Stock": 82,
+          "Reorder Level": 20,
+          "Last Checked": "2026-04-05T10:30:00",
+          "Supplier": "Bluecell Systems",
+          "Notes": "Priority item"
+        },
+        {
+          "SKU": "SH-220",
+          "Item": "Sheets Sync Seat",
+          "Category": "Software",
+          "In Stock": 145,
+          "Reorder Level": 35,
+          "Last Checked": "2026-04-07T14:10:00",
+          "Supplier": "Northbay Digital",
+          "Notes": null
+        },
+        {
+          "SKU": "DB-340",
+          "Item": "Dashboard Kit",
+          "Category": "Template",
+          "In Stock": 39,
+          "Reorder Level": 15,
+          "Last Checked": "2026-04-08T09:00:00",
+          "Supplier": "Clearview Apps",
+          "Notes": "Renewal bundle"
+        },
+        {
+          "SKU": "IM-480",
+          "Item": "Import Suite",
+          "Category": "Tooling",
+          "In Stock": 0,
+          "Reorder Level": 10,
+          "Last Checked": "2026-04-09T17:45:00",
+          "Supplier": "Kiteworks",
+          "Notes": "Restock needed"
+        }
+      ],
+      "row_count": 4,
+      "column_count": 8
+    }
+  }
+}

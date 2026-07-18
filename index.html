@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loader"></div>
+    <p>Loading workbook...</p>
+  </div>
+
+  <header class="app-header">
+    <div class="brand">
+      <img class="brand-mark" src="assets/dashboard-mark.svg" alt="" aria-hidden="true">
+      <div>
+        <h1>Excel Dashboard</h1>
+        <p>Live spreadsheet viewer</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <select id="fontSelector" class="control" aria-label="Choose dashboard font">
+        <option value="default">Excel Default</option>
+        <option value="kruti">Kruti Dev 010</option>
+      </select>
+      <button id="themeToggle" class="icon-button" type="button" title="Toggle theme" aria-label="Toggle theme">
+        <span id="themeIcon">☾</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="errorState" class="state-panel hidden" role="alert">
+      <h2>Could not load workbook data</h2>
+      <p id="errorMessage">Run update_website.bat to generate data.json, then refresh this page.</p>
+    </section>
+
+    <section class="stats-grid" aria-label="Workbook statistics">
+      <article class="stat-card">
+        <span>Total Rows</span>
+        <strong id="totalRows">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Total Columns</span>
+        <strong id="totalColumns">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Filtered Rows</span>
+        <strong id="filteredRows">0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Current Worksheet</span>
+        <strong id="currentWorksheet">-</strong>
+      </article>
+      <article class="stat-card">
+        <span>Last Updated</span>
+        <strong id="lastUpdated">-</strong>
+      </article>
+    </section>
+
+    <section class="toolbar" aria-label="Spreadsheet tools">
+      <div class="toolbar-group">
+        <label for="worksheetSelector">Worksheet</label>
+        <select id="worksheetSelector" class="control"></select>
+      </div>
+      <div class="search-box">
+        <label for="globalSearch">Search</label>
+        <input id="globalSearch" class="control" type="search" placeholder="Search all columns...">
+      </div>
+      <div class="toolbar-group">
+        <label for="rowsPerPage">Rows</label>
+        <select id="rowsPerPage" class="control">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="export-actions">
+        <button id="exportCsv" class="button" type="button">CSV</button>
+        <button id="exportExcel" class="button" type="button">Excel</button>
+        <button id="printView" class="button primary" type="button">Print</button>
+      </div>
+    </section>
+
+    <section id="emptyState" class="state-panel hidden">
+      <h2>No records to show</h2>
+      <p>Try clearing search or column filters, or choose a different worksheet.</p>
+    </section>
+
+    <section class="table-panel" aria-label="Spreadsheet data">
+      <div class="table-scroll">
+        <table id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <button id="prevPage" class="button" type="button">Previous</button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button id="nextPage" class="button" type="button">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
