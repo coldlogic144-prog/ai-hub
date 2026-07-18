@@ -36,6 +36,22 @@ excel-dashboard/
 3. The script generates `data.json`, commits the update, and pushes it to GitHub.
 4. Refresh the website after GitHub Pages finishes deploying.
 
+## GitHub-Only Update
+
+This project includes a GitHub Action at `.github/workflows/update-data-json.yml`.
+
+If the project is already on GitHub, you can update the site without running Python manually:
+
+1. Make sure `.github/workflows/update-data-json.yml` is at the top level of the repository, not hidden inside another folder.
+2. Open the repository on GitHub.
+3. Replace the existing `data.xlsx` file with your new Excel file.
+4. Keep the filename exactly `data.xlsx`.
+5. Commit the change.
+6. GitHub Actions will run automatically and regenerate `data.json`.
+7. After the action finishes and GitHub Pages redeploys, refresh the website.
+
+Only `data.xlsx` needs to be replaced by you. The workflow updates `data.json` automatically.
+
 ## Running Locally
 
 Modern browsers may block `data.json` when opening `index.html` directly from disk. For the most reliable local preview, run:
@@ -82,5 +98,6 @@ The stylesheet loads `fonts/KrutiDev010.ttf` through `@font-face`. Add your lice
 - **Dashboard says data cannot load:** Run `python excel_to_json.py` or double-click `update_website.bat`.
 - **Python cannot import pandas/openpyxl:** Run `pip install pandas openpyxl`.
 - **Git push fails:** Confirm the repository has a remote and you are signed in.
+- **GitHub upload changed Excel but site did not update:** Open the repository's **Actions** tab and confirm the **Update dashboard data** workflow finished successfully.
 - **Hindi legacy text looks wrong:** Choose `Kruti Dev 010` in the font selector and confirm the real `KrutiDev010.ttf` file is in `fonts`.
 - **New worksheet is not shown:** Replace `data.xlsx`, run the update script, and refresh the website.
